@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,9 +27,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="users")
-public class Usuario implements Serializable {
+public class Usuario implements UserDetails {
 
-    private static final long serialVersionUID = 1L;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,5 +54,39 @@ public class Usuario implements Serializable {
     @ElementCollection(fetch= FetchType.EAGER)
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
-    
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+
+        roles.stream().forEach(role ->{
+
+            list.add(new SimpleGrantedAuthority("ROLE_" + role));
+
+        });
+
+        return list;
+
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
