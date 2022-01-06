@@ -48,7 +48,7 @@ public class Usuario implements UserDetails {
     private boolean enabled;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<Role> papeis;
+    private List<Role> roles;
 
 
     @Override
@@ -56,7 +56,7 @@ public class Usuario implements UserDetails {
 
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 
-        papeis.stream().forEach(role -> {
+        roles.stream().forEach(role -> {
 
             list.add(new SimpleGrantedAuthority("ROLE_" + role));
 
