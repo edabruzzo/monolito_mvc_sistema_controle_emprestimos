@@ -12,5 +12,5 @@ public enum StatusEmprestimoDTO {
     NAO_AUTORIZADO,
     APROVADO,
     PROBLEMA_AO_SALVAR,
-    CONSOLIDADO;
+    CONSOLIDADO, NAO_APROVADO;
 }

@@ -5,6 +5,7 @@ import br.com.abruzzo.tqi_backend_evolution_2021.dto.EmprestimoDTO;
 import br.com.abruzzo.tqi_backend_evolution_2021.dto.SolicitacaoClienteEmprestimoDTO;
 import br.com.abruzzo.tqi_backend_evolution_2021.dto.UsuarioDTO;
 import br.com.abruzzo.tqi_backend_evolution_2021.model.Cliente;
+import br.com.abruzzo.tqi_backend_evolution_2021.model.Role;
 import br.com.abruzzo.tqi_backend_evolution_2021.service.AutenticacaoUsuarioService;
 import br.com.abruzzo.tqi_backend_evolution_2021.service.ClienteService;
 import br.com.abruzzo.tqi_backend_evolution_2021.service.EmprestimoService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -71,8 +73,30 @@ public class SolicitacaoEmprestimoController {
     @PostMapping("novo")
     public String solicitarNovoEmprestimo(@ModelAttribute SolicitacaoClienteEmprestimoDTO solicitacaoClienteEmprestimoDTO, Model model){
 
-        UsuarioDTO usuarioDTOSalvo = this.autenticacaoUsuarioService.criarUsuario(solicitacaoClienteEmprestimoDTO);
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setEmailAddress(solicitacaoClienteEmprestimoDTO.getEmail());
+        usuarioDTO.setPassword(solicitacaoClienteEmprestimoDTO.getSenha());
+        usuarioDTO.setStatus("ATIVO");
+        List<String> roles = new ArrayList<>();
+        roles.add(String.valueOf(Role.CLIENTE));
+        usuarioDTO.setRoles(roles);
+        usuarioDTO.setLoginAttempt(0);
+
+        /**
+         * Importante !
+                *
+         * Estamos usando o CPF como username do usuário logado
+         * Isto permite algumas checagens de segurança no serviço de empréstimo
+         * sem precisar bater no servidor de clientes.
+         *
+         * */
+        usuarioDTO.setUsername(solicitacaoClienteEmprestimoDTO.getCpf());
+
+
+        UsuarioDTO usuarioDTOSalvo = this.autenticacaoUsuarioService.criarUsuario(usuarioDTO);
         logger.info("Foi criado o usuário na base para fins de autenticação %s",usuarioDTOSalvo);
+
 
         /**
          * Após a chamada para @link ClienteService se tudo correr bem já teremos

@@ -74,6 +74,8 @@ public class SolicitacaoEmprestimoValidacoesService {
 
             if(solicitacaoEmprestimoAprovada)
                 emprestimoDTO.setStatusEmprestimoDTO(StatusEmprestimoDTO.APROVADO);
+            else
+                emprestimoDTO.setStatusEmprestimoDTO(StatusEmprestimoDTO.NAO_APROVADO);
         }
 
 

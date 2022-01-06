@@ -34,12 +34,8 @@ public class UsuarioController {
     @PostMapping("criar")
     public String criarNovousuario(@ModelAttribute UsuarioDTO usuarioDTO, Model model){
 
-        Usuario usuario = this.autenticacaoUsuarioService.converterUsuarioDTOToModel(usuarioDTO);
-        Usuario usuarioSalvo = this.autenticacaoUsuarioService.criarUsuario(usuario);
-        UsuarioDTO usuarioSalvoDTO = this.autenticacaoUsuarioService.converterUsuarioModelToDTO(usuarioSalvo);
-
-        model.addAttribute("usuarioSalvo",usuarioSalvoDTO);
-
+        UsuarioDTO usuarioDTOSalvo = this.autenticacaoUsuarioService.criarUsuario(usuarioDTO);
+        model.addAttribute("usuarioSalvo",usuarioDTOSalvo);
         return "usuario";
     }
 

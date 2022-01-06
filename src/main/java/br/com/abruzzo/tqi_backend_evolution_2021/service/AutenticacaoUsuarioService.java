@@ -32,35 +32,9 @@ public class AutenticacaoUsuarioService {
 
 
 
-    public UsuarioDTO criarUsuario(SolicitacaoClienteEmprestimoDTO solicitacaoClienteEmprestimoDTO) {
+    public UsuarioDTO criarUsuario(UsuarioDTO usuarioDTO) {
 
 
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setEmailAddress(solicitacaoClienteEmprestimoDTO.getEmail());
-        usuarioDTO.setStatus("Ativo");
-
-        List<String> listaRoles = new ArrayList<>();
-        listaRoles.add("CLIENTE");
-
-        usuarioDTO.setRoles(listaRoles);
-        usuarioDTO.setLoginAttempt(0);
-        usuarioDTO.setPassword(solicitacaoClienteEmprestimoDTO.getSenha());
-
-        /**
-         * Importante !
-         *
-         * Estamos usando o CPF como username do usuário logado
-         * Isto permite algumas checagens de segurança no serviço de empréstimo
-         * sem precisar bater no servidor de clientes.
-         */
-        usuarioDTO.setUsername(solicitacaoClienteEmprestimoDTO.getCpf());
-
-
-        /**
-         * Após a chamada para @link IClienteFeignClient se tudo correr bem já teremos
-         * salvo o usuário no microsserviço responsável pelo gerenciamento de autenticação de usuários
-         * que nos retornará o clienteSalvoDTO já com um idUsuario preenchido
-         */
         Usuario usuario = this.converterUsuarioDTOToModel(usuarioDTO);
         Usuario usuarioSalvo = this.autenticacaoUsuarioRepository.save(usuario);
         UsuarioDTO usuarioDTOSalvo = this.converterUsuarioModelToDTO(usuarioSalvo);
