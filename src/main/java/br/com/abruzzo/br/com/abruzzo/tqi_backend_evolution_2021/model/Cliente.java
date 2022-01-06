@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -25,7 +26,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "tb_cliente", catalog = "cliente", schema = "public")
 //@Data //Using @Data for JPA entities is not recommended. It can cause severe performance and memory consumption issues.
-@NoArgsConstructor
 public class Cliente implements Serializable {
 
 
@@ -58,9 +58,13 @@ public class Cliente implements Serializable {
     @Column(name="renda")
     private Double renda;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
+    List<Emprestimo> listaEmprestimos;
 
 
-    public Cliente(Long id, String nome, String email, String cpf, String rg, String enderecoCompleto, Double renda) {
+    public Cliente() {  }
+
+    public Cliente(Long id, String nome, String email, String cpf, String rg, String enderecoCompleto, Double renda, List<Emprestimo> listaEmprestimos) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -68,9 +72,8 @@ public class Cliente implements Serializable {
         this.rg = rg;
         this.enderecoCompleto = enderecoCompleto;
         this.renda = renda;
+        this.listaEmprestimos = listaEmprestimos;
     }
-
-
 
 
     public Long getId() {
@@ -129,6 +132,14 @@ public class Cliente implements Serializable {
         this.renda = renda;
     }
 
+    public List<Emprestimo> getListaEmprestimos() {
+        return listaEmprestimos;
+    }
+
+    public void setListaEmprestimos(List<Emprestimo> listaEmprestimos) {
+        this.listaEmprestimos = listaEmprestimos;
+    }
+
 
     @Override
     public String toString() {
@@ -136,23 +147,11 @@ public class Cliente implements Serializable {
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
-                ", CPF='" + cpf + '\'' +
-                ", RG='" + rg + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", rg='" + rg + '\'' +
                 ", enderecoCompleto='" + enderecoCompleto + '\'' +
                 ", renda=" + renda +
+                ", listaEmprestimos=" + listaEmprestimos +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cliente cliente = (Cliente) o;
-        return Objects.equals(id, cliente.id) && Objects.equals(nome, cliente.nome) && Objects.equals(email, cliente.email) && Objects.equals(cpf, cliente.cpf) && Objects.equals(rg, cliente.rg) && Objects.equals(enderecoCompleto, cliente.enderecoCompleto) && Objects.equals(renda, cliente.renda);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nome, email, cpf, rg, enderecoCompleto, renda);
     }
 }

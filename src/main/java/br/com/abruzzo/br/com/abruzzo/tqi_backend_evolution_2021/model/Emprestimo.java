@@ -1,5 +1,7 @@
 package br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
@@ -38,19 +40,21 @@ public class Emprestimo implements Serializable {
     @Column(name = "valor")
     private Double valor;
 
-    @Column(name = "data_primeira_parcela")
+    @Column(name = "dataPrimeiraParcela")
     @Future
     private Date dataPrimeiraParcela;
 
     @Column(name = "numeroMaximoParcelas")
     @Max(60)
-    private Integer numeroMaximoParcelas;
+    private Integer numeroParcelas;
 
-    @Column(name="idCliente")
-    private Integer idCliente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Cliente cliente;
 
     @Enumerated(EnumType.STRING)
     private StatusEmprestimo status;
+
 
     public Long getId() {
         return id;
@@ -76,20 +80,20 @@ public class Emprestimo implements Serializable {
         this.dataPrimeiraParcela = dataPrimeiraParcela;
     }
 
-    public Integer getNumeroMaximoParcelas() {
-        return numeroMaximoParcelas;
+    public Integer getNumeroParcelas() {
+        return numeroParcelas;
     }
 
-    public void setNumeroMaximoParcelas(Integer numeroMaximoParcelas) {
-        this.numeroMaximoParcelas = numeroMaximoParcelas;
+    public void setNumeroParcelas(Integer numeroParcelas) {
+        this.numeroParcelas = numeroParcelas;
     }
 
-    public Integer getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public StatusEmprestimo getStatus() {
@@ -103,12 +107,12 @@ public class Emprestimo implements Serializable {
 
     public Emprestimo() { }
 
-    public Emprestimo(Long id, Double valor, Date dataPrimeiraParcela, Integer numeroMaximoParcelas, Integer idCliente, StatusEmprestimo status) {
+    public Emprestimo(Long id, Double valor, Date dataPrimeiraParcela, Integer numeroParcelas, Cliente cliente, StatusEmprestimo status) {
         this.id = id;
         this.valor = valor;
         this.dataPrimeiraParcela = dataPrimeiraParcela;
-        this.numeroMaximoParcelas = numeroMaximoParcelas;
-        this.idCliente = idCliente;
+        this.numeroParcelas = numeroParcelas;
+        this.cliente = cliente;
         this.status = status;
     }
 
@@ -118,24 +122,10 @@ public class Emprestimo implements Serializable {
         return "Emprestimo{" +
                 "id=" + id +
                 ", valor=" + valor +
-                ", data_primeira_parcela=" + dataPrimeiraParcela +
-                ", numeroMaximoParcelas=" + numeroMaximoParcelas +
-                ", idCliente=" + idCliente +
+                ", dataPrimeiraParcela=" + dataPrimeiraParcela +
+                ", numeroParcelas=" + numeroParcelas +
+                ", cliente=" + cliente +
                 ", status=" + status +
                 '}';
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Emprestimo that = (Emprestimo) o;
-        return Objects.equals(id, that.id) && Objects.equals(valor, that.valor) && Objects.equals(dataPrimeiraParcela, that.dataPrimeiraParcela) && Objects.equals(numeroMaximoParcelas, that.numeroMaximoParcelas) && Objects.equals(idCliente, that.idCliente) && status == that.status;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, valor, dataPrimeiraParcela, numeroMaximoParcelas, idCliente, status);
     }
 }
