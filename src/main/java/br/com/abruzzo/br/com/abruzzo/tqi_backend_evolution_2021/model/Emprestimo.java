@@ -5,7 +5,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import java.io.Serializable;
 import java.sql.Date;
-
+import java.util.Objects;
 
 
 /**
@@ -40,7 +40,7 @@ public class Emprestimo implements Serializable {
 
     @Column(name = "data_primeira_parcela")
     @Future
-    private Date data_primeira_parcela;
+    private Date dataPrimeiraParcela;
 
     @Column(name = "numeroMaximoParcelas")
     @Max(60)
@@ -49,16 +49,8 @@ public class Emprestimo implements Serializable {
     @Column(name="idCliente")
     private Integer idCliente;
 
-    public Emprestimo() {}
-
-    public Emprestimo(Long id, Double valor, Date data_primeira_parcela, Integer numeroMaximoParcelas, Integer idCliente) {
-        this.id = id;
-        this.valor = valor;
-        this.data_primeira_parcela = data_primeira_parcela;
-        this.numeroMaximoParcelas = numeroMaximoParcelas;
-        this.idCliente = idCliente;
-    }
-
+    @Enumerated(EnumType.STRING)
+    private StatusEmprestimo status;
 
     public Long getId() {
         return id;
@@ -76,12 +68,12 @@ public class Emprestimo implements Serializable {
         this.valor = valor;
     }
 
-    public Date getData_primeira_parcela() {
-        return data_primeira_parcela;
+    public Date getDataPrimeiraParcela() {
+        return dataPrimeiraParcela;
     }
 
-    public void setData_primeira_parcela(Date data_primeira_parcela) {
-        this.data_primeira_parcela = data_primeira_parcela;
+    public void setDataPrimeiraParcela(Date dataPrimeiraParcela) {
+        this.dataPrimeiraParcela = dataPrimeiraParcela;
     }
 
     public Integer getNumeroMaximoParcelas() {
@@ -100,14 +92,50 @@ public class Emprestimo implements Serializable {
         this.idCliente = idCliente;
     }
 
+    public StatusEmprestimo getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEmprestimo status) {
+        this.status = status;
+    }
+
+
+    public Emprestimo() { }
+
+    public Emprestimo(Long id, Double valor, Date dataPrimeiraParcela, Integer numeroMaximoParcelas, Integer idCliente, StatusEmprestimo status) {
+        this.id = id;
+        this.valor = valor;
+        this.dataPrimeiraParcela = dataPrimeiraParcela;
+        this.numeroMaximoParcelas = numeroMaximoParcelas;
+        this.idCliente = idCliente;
+        this.status = status;
+    }
+
+
     @Override
     public String toString() {
         return "Emprestimo{" +
                 "id=" + id +
                 ", valor=" + valor +
-                ", data_primeira_parcela=" + data_primeira_parcela +
+                ", data_primeira_parcela=" + dataPrimeiraParcela +
                 ", numeroMaximoParcelas=" + numeroMaximoParcelas +
                 ", idCliente=" + idCliente +
+                ", status=" + status +
                 '}';
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Emprestimo that = (Emprestimo) o;
+        return Objects.equals(id, that.id) && Objects.equals(valor, that.valor) && Objects.equals(dataPrimeiraParcela, that.dataPrimeiraParcela) && Objects.equals(numeroMaximoParcelas, that.numeroMaximoParcelas) && Objects.equals(idCliente, that.idCliente) && status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, valor, dataPrimeiraParcela, numeroMaximoParcelas, idCliente, status);
     }
 }

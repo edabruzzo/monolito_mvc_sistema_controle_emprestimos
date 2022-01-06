@@ -1,11 +1,10 @@
-package br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.model;
+package br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.dto;
 
 /**
  * @author Emmanuel Abruzzo
  * @date 06/01/2022
  */
-public enum StatusEmprestimo {
-
+public enum StatusEmprestimoDTO {
 
     ABERTO,
     EM_PROCESSAMENTO,
@@ -14,6 +13,4 @@ public enum StatusEmprestimo {
     APROVADO,
     PROBLEMA_AO_SALVAR,
     CONSOLIDADO;
-
-
 }
