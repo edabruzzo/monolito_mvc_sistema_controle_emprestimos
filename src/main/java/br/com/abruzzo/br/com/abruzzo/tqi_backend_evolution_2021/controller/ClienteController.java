@@ -18,7 +18,6 @@ import java.util.List;
  * @author Emmanuel Abruzzo
  * @date 06/01/2022
  */
-
 @Controller
 public class ClienteController {
 
@@ -27,32 +26,19 @@ public class ClienteController {
     ClienteService clienteService;
 
 
-    @Autowired
-    ModelMapper modelMapper;
-
-
     @GetMapping("/cliente")
     @RolesAllowed({"FUNCIONARIO", "SUPER_ADMIN"})
     public String clientes(Model model){
 
 
         List<Cliente> listaClientes = this.clienteService.listarClientes();
-        List<ClienteDTO> listaClientesDTO = new ArrayList<>();
-
-        listaClientes.stream().forEach(cliente ->{
-
-            ClienteDTO clienteDTO = this.modelMapper.map(cliente,ClienteDTO.class);
-            listaClientesDTO.add(clienteDTO);
-
-        });
-
+        List<ClienteDTO> listaClientesDTO = this.clienteService.converterModelToDTO(listaClientes);
         model.addAttribute("listaClientes",listaClientesDTO);
 
         return "cliente";
 
-
-
     }
+
 
 
 }
