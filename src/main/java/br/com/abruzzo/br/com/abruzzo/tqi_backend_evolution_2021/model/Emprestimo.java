@@ -7,6 +7,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -44,6 +45,10 @@ public class Emprestimo implements Serializable {
     @Future
     private Date dataPrimeiraParcela;
 
+    @Column(name="dataSolicitacao")
+    private LocalDateTime dataSolicitacao;
+
+
     @Column(name = "numeroMaximoParcelas")
     @Max(60)
     private Integer numeroParcelas;
@@ -54,6 +59,19 @@ public class Emprestimo implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private StatusEmprestimo status;
+
+
+    public Emprestimo() {  }
+
+    public Emprestimo(Long id, Double valor, Date dataPrimeiraParcela, LocalDateTime dataSolicitacao, Integer numeroParcelas, Cliente cliente, StatusEmprestimo status) {
+        this.id = id;
+        this.valor = valor;
+        this.dataPrimeiraParcela = dataPrimeiraParcela;
+        this.dataSolicitacao = dataSolicitacao;
+        this.numeroParcelas = numeroParcelas;
+        this.cliente = cliente;
+        this.status = status;
+    }
 
 
     public Long getId() {
@@ -78,6 +96,14 @@ public class Emprestimo implements Serializable {
 
     public void setDataPrimeiraParcela(Date dataPrimeiraParcela) {
         this.dataPrimeiraParcela = dataPrimeiraParcela;
+    }
+
+    public LocalDateTime getDataSolicitacao() {
+        return dataSolicitacao;
+    }
+
+    public void setDataSolicitacao(LocalDateTime dataSolicitacao) {
+        this.dataSolicitacao = dataSolicitacao;
     }
 
     public Integer getNumeroParcelas() {
@@ -105,24 +131,13 @@ public class Emprestimo implements Serializable {
     }
 
 
-    public Emprestimo() { }
-
-    public Emprestimo(Long id, Double valor, Date dataPrimeiraParcela, Integer numeroParcelas, Cliente cliente, StatusEmprestimo status) {
-        this.id = id;
-        this.valor = valor;
-        this.dataPrimeiraParcela = dataPrimeiraParcela;
-        this.numeroParcelas = numeroParcelas;
-        this.cliente = cliente;
-        this.status = status;
-    }
-
-
     @Override
     public String toString() {
         return "Emprestimo{" +
                 "id=" + id +
                 ", valor=" + valor +
                 ", dataPrimeiraParcela=" + dataPrimeiraParcela +
+                ", dataSolicitacao=" + dataSolicitacao +
                 ", numeroParcelas=" + numeroParcelas +
                 ", cliente=" + cliente +
                 ", status=" + status +

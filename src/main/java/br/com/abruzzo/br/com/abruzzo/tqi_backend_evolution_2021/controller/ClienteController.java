@@ -3,14 +3,12 @@ package br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.controller;
 import br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.dto.ClienteDTO;
 import br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.model.Cliente;
 import br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.service.ClienteService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,7 +30,7 @@ public class ClienteController {
 
 
         List<Cliente> listaClientes = this.clienteService.listarClientes();
-        List<ClienteDTO> listaClientesDTO = this.clienteService.converterModelToDTO(listaClientes);
+        List<ClienteDTO> listaClientesDTO = this.clienteService.converterlistModelToDTO(listaClientes);
         model.addAttribute("listaClientes",listaClientesDTO);
 
         return "cliente";

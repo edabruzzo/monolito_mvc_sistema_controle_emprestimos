@@ -1,6 +1,7 @@
 package br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.service;
 
 import br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.dto.ClienteDTO;
+import br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.dto.SolicitacaoClienteEmprestimoDTO;
 import br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.model.Cliente;
 import br.com.abruzzo.br.com.abruzzo.tqi_backend_evolution_2021.repository.ClienteRepository;
 import org.modelmapper.ModelMapper;
@@ -30,7 +31,7 @@ public class ClienteService {
     }
 
 
-    public List<ClienteDTO> converterModelToDTO(List<Cliente> listaClientes) {
+    public List<ClienteDTO> converterlistModelToDTO(List<Cliente> listaClientes) {
 
         List<ClienteDTO> listaClientesDTO = new ArrayList<>();
 
@@ -44,7 +45,29 @@ public class ClienteService {
     }
 
 
+    public ClienteDTO criaNovoCliente(SolicitacaoClienteEmprestimoDTO solicitacaoClienteEmprestimoDTO) {
+
+            ClienteDTO clienteDTO = new ClienteDTO();
+            clienteDTO.setNome(solicitacaoClienteEmprestimoDTO.getNome());
+            clienteDTO.setCpf(solicitacaoClienteEmprestimoDTO.getCpf());
+            clienteDTO.setRenda(solicitacaoClienteEmprestimoDTO.getRenda());
+            clienteDTO.setEnderecoCompleto(solicitacaoClienteEmprestimoDTO.getEnderecoCompleto());
+            clienteDTO.setRg(solicitacaoClienteEmprestimoDTO.getRg());
+
+            Cliente cliente = this.converterClienteDTOToModel(clienteDTO);
+            Cliente clienteSalvo = this.clienteRepository.save(cliente);
+            ClienteDTO clienteSalvoDTO = this.converterModelToDTO(clienteSalvo);
+            return clienteSalvoDTO;
+    }
 
 
+    private ClienteDTO converterModelToDTO(Cliente cliente) {
+        ClienteDTO clienteDTO = this.modelMapper.map(cliente, ClienteDTO.class);
+        return clienteDTO;
+    }
 
+    public Cliente converterClienteDTOToModel(ClienteDTO clienteDTO) {
+        Cliente cliente = this.modelMapper.map(clienteDTO, Cliente.class);
+        return cliente;
+    }
 }

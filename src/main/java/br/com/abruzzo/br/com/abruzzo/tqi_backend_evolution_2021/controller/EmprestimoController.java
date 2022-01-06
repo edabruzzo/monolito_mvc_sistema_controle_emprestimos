@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import java.util.List;
  * @date 06/01/2022
  */
 @Controller
+@RequestMapping("/emprestimo")
 public class EmprestimoController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmprestimoController.class);
@@ -48,8 +47,7 @@ public class EmprestimoController {
     @RolesAllowed({"CLIENTE","FUNCIONARIO","SUPER_ADMIN"})
     public String retornaTodosEmprestimosByCliente(@PathVariable String cpfClienteConsultado, Model model){
 
-        List<Emprestimo> listaEmprestimos = emprestimoService.retornaTodosEmprestimosByCliente(cpfClienteConsultado);
-        List<EmprestimoDTO> listaEmprestimoDTO = emprestimoService.converterModelToDTO(listaEmprestimos);
+        List<EmprestimoDTO> listaEmprestimoDTO = emprestimoService.retornaTodosEmprestimosByCliente(cpfClienteConsultado);
         model.addAttribute("listaEmprestimos",listaEmprestimoDTO);
 
         return "emprestimo/listagemEmprestimos";
@@ -71,19 +69,13 @@ public class EmprestimoController {
     @RolesAllowed({"FUNCIONARIO","SUPER_ADMIN"})
     public String retornaTodosEmprestimos(Model model){
 
-        List<Emprestimo> listaEmprestimos = this.emprestimoService.retornaTodosEmprestimos();
-        List<EmprestimoDTO> listaEmprestimoDTO = emprestimoService.converterModelToDTO(listaEmprestimos);
+        List<EmprestimoDTO> listaEmprestimoDTO = this.emprestimoService.retornaTodosEmprestimos();
         model.addAttribute("listaEmprestimos",listaEmprestimoDTO);
-
         return "emprestimo/listagemEmprestimo";
 
     }
 
 
-
-
-
-
-
-
 }
+
+
