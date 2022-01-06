@@ -7,13 +7,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 /**
  * @author Emmanuel Abruzzo
- * @date 04/01/2022
+ * @date 06/01/2022
  */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        @Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
