@@ -1,5 +1,10 @@
 package br.com.abruzzo.tqi_backend_evolution_2021.config;
 
+
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+
 import br.com.abruzzo.tqi_backend_evolution_2021.model.Role;
 import br.com.abruzzo.tqi_backend_evolution_2021.model.Usuario;
 import br.com.abruzzo.tqi_backend_evolution_2021.repository.AutenticacaoUsuarioRepository;
@@ -9,13 +14,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @author Emmanuel Abruzzo
@@ -42,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl(String.format("/home"), true)
+                        .defaultSuccessUrl("/cliente", true)
                         .permitAll()
                 )
                 .logout(logout -> {
@@ -61,25 +64,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(encoder);
 
-        /*
-        UserDetails usuarioInicial = User.withDefaultPasswordEncoder()
-                .username("99999999999")
-                .password("9999")
-                .roles(String.valueOf(Role.FUNCIONARIO))
-                .roles(String.valueOf(Role.SUPER_ADMIN))
-                .build();
+        String cpfAdmin = "99999999999";
+        String senhaCriptografada = encoder.encode("9999");
 
-         */
+        Usuario usuario = this.autenticacaoUsuarioRepository.findByUsername(cpfAdmin);
 
-        Usuario usuario = new Usuario();
-        usuario.setUsername("9999999999");
-        usuario.setPassword("9999");
-        List<Role> roles = new ArrayList<>();
-        roles.add(Role.FUNCIONARIO);
-        roles.add(Role.SUPER_ADMIN);
-        usuario.setRoles(roles);
+        if(usuario == null){
 
-        this.autenticacaoUsuarioRepository.save(usuario);
+            UserDetails userDetails = User.builder()
+                    .username(cpfAdmin)
+                    .password(senhaCriptografada)
+                    .roles(String.valueOf(Role.FUNCIONARIO),String.valueOf(Role.SUPER_ADMIN))
+                    .build();
+
+            List<Role> papeis = new ArrayList<>();
+            papeis.add(Role.FUNCIONARIO);
+            papeis.add(Role.SUPER_ADMIN);
+
+            usuario = new Usuario();
+            usuario.setUsername(cpfAdmin);
+            usuario.setPassword(senhaCriptografada);
+            usuario.setPapeis(papeis);
+            usuario.setEnabled(true);
+
+            this.autenticacaoUsuarioRepository.save(usuario);
+
+        }
+
+
+
 
     }
 

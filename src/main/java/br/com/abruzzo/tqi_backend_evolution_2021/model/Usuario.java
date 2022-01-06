@@ -9,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,38 +28,35 @@ import java.util.List;
 @Table(name="users")
 public class Usuario implements UserDetails {
 
-
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    @Column(name="username")
+    @Column(name = "username")
     private String username;
 
-    @Column(name="emailAddress")
+    @Column(name = "emailAddress")
     private String emailAddress;
 
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
-    @Column(name="status")
+    @Column(name = "status")
     private String status;
 
-    @Column(name="tentativasLogin")
+    @Column(name = "tentativasLogin")
     private Integer loginAttempt;
 
-    @ElementCollection(fetch= FetchType.EAGER)
-    @Builder.Default
-    private List<Role> roles = new ArrayList<>();
+    @Column(name="enabled")
+    private boolean enabled;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Role> papeis;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 
-        roles.stream().forEach(role ->{
+        papeis.stream().forEach(role -> {
 
             list.add(new SimpleGrantedAuthority("ROLE_" + role));
 
@@ -85,8 +81,5 @@ public class Usuario implements UserDetails {
         return false;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
+
 }
