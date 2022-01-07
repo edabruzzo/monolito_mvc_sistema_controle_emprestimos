@@ -11,7 +11,7 @@
 
 
 
-<div sec:authorize="authenticated()" th:switch="${listaEmprestimos}">
+<div sec:authorize="isAuthenticated()" th:switch="${listaEmprestimos}">
     <h2 th:case="null">Nenhum empréstimo a ser exibido!</h2>
     <div th:case="*">
         <h2>Lista de Empréstimos</h2>

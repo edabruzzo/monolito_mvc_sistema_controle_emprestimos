@@ -42,9 +42,9 @@ public class EmprestimoController {
     @GetMapping(value="/{cpfCliente}",produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @RolesAllowed({"CLIENTE","FUNCIONARIO","SUPER_ADMIN"})
-    public String retornaTodosEmprestimosByCliente(@PathVariable String cpfClienteConsultado, Model model){
+    public String retornaTodosEmprestimosByCliente(@PathVariable String cpfCliente, Model model){
 
-        List<EmprestimoDTO> listaEmprestimoDTO = emprestimoService.retornaTodosEmprestimosByCliente(cpfClienteConsultado);
+        List<EmprestimoDTO> listaEmprestimoDTO = emprestimoService.retornaTodosEmprestimosByCliente(cpfCliente);
         model.addAttribute("listaEmprestimos",listaEmprestimoDTO);
 
         return "emprestimo/listagemEmprestimos";
@@ -68,7 +68,7 @@ public class EmprestimoController {
 
         List<EmprestimoDTO> listaEmprestimoDTO = this.emprestimoService.retornaTodosEmprestimos();
         model.addAttribute("listaEmprestimos",listaEmprestimoDTO);
-        return "emprestimo/listagemEmprestimo";
+        return "emprestimo/listagemEmprestimos";
 
     }
 

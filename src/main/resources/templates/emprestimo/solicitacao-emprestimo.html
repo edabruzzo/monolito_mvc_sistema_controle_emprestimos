@@ -11,7 +11,8 @@
 
 
 
-    <div sec:authorize="hasRole('FUNCIONARIO')"  class="card mt-3">
+    <div sec:authorize="isAuthenticated()"  class="card mt-3">
+        <div sec:authorize="hasRole('FUNCIONARIO')">
 
         <form th:object="${solicitacaoClienteEmprestimoDTO}" class="card-body"
               action="@{/solicitacao-emprestimo/novo}" method="POST">
@@ -114,11 +115,12 @@
             </div>
             <button class="btn btn-primary" type="submit">Solicitar empréstimo</button>
         </form>
+        </div>
     </div>
 
 
-
-    <div sec:authorize="authenticated()" th:switch="${listaSolicitadoesEmprestimo}">
+    <div sec:authorize="hasRole('FUNCIONARIO')">
+    <div sec:authorize="isAuthenticated()" th:switch="${listaSolicitadoesEmprestimo}">
         <h2 th:case="null">Nenhums solicitação de empréstimo a ser exibida !</h2>
         <div th:case="*">
             <h2>Lista de Solicitações de Empréstimos em andamento</h2>
@@ -167,10 +169,7 @@
             </table>
         </div>
     </div>
-
-
-
-
-</div>
+    </div>
+    </div>
 </body>
 </html>
