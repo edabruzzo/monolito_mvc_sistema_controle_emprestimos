@@ -1,4 +1,7 @@
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
+<div th:replace="~{base :: titulo('Meus Empréstimos')}"></div>
 
 <nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between mb-3">
     <div class="navbar-nav">
@@ -11,3 +14,4 @@
     </div>
     <a href="/solicitacao_emprestimo/solicitar"><button class="btn btn-outline-secondary my-2 my-sm-0">Solicitar Novo Empérstimo</button></a>
 </nav>
+</html>

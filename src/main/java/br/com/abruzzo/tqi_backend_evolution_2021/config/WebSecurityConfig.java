@@ -85,9 +85,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         String cpfAdmin = "99999999999";
         String senhaCriptografada = this.encoder.encode("9999");
 
-        Usuario usuario = this.autenticacaoUsuarioRepository.findByUsername(cpfAdmin);
 
-        if(usuario == null){
+
+        Usuario usuarioAdmin = this.autenticacaoUsuarioRepository.findByUsername(cpfAdmin);
+
+
+        if(usuarioAdmin == null){
 
             UserDetails userDetails = User.builder()
                     .username(cpfAdmin)
@@ -99,15 +102,75 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             roles.add(Role.FUNCIONARIO);
             roles.add(Role.SUPER_ADMIN);
 
-            usuario = new Usuario();
-            usuario.setUsername(cpfAdmin);
-            usuario.setPassword(senhaCriptografada);
-            usuario.setRoles(roles);
-            usuario.setEnabled(true);
+            usuarioAdmin = new Usuario();
+            usuarioAdmin.setUsername(cpfAdmin);
+            usuarioAdmin.setPassword(senhaCriptografada);
+            usuarioAdmin.setRoles(roles);
+            usuarioAdmin.setEnabled(true);
 
-            this.autenticacaoUsuarioRepository.save(usuario);
+            this.autenticacaoUsuarioRepository.save(usuarioAdmin);
 
         }
+
+        String cpfCliente = "11111111111";
+        String senhaCriptografadaCliente = this.encoder.encode("1111");
+
+        Usuario usuarioCliente = this.autenticacaoUsuarioRepository.findByUsername(cpfCliente);
+
+
+        if(usuarioCliente == null){
+
+            UserDetails userDetails = User.builder()
+                    .username(cpfCliente)
+                    .password(senhaCriptografadaCliente)
+                    .roles(String.valueOf(Role.CLIENTE))
+                    .build();
+
+            List<Role> roles = new ArrayList<>();
+            roles.add(Role.CLIENTE);
+
+            usuarioCliente = new Usuario();
+            usuarioCliente.setUsername(cpfCliente);
+            usuarioCliente.setPassword(senhaCriptografadaCliente);
+            usuarioCliente.setRoles(roles);
+            usuarioCliente.setEnabled(true);
+
+            this.autenticacaoUsuarioRepository.save(usuarioCliente);
+
+        }
+
+
+
+
+        String cpfFuncionarioSemPrivilegioAdmin = "22222222222";
+        String senhaCriptografadaFuncionarioSemPrivilegioAdmin = this.encoder.encode("2222");
+
+        Usuario usuarioFuncionarioSemPrivilegioAdmin = this.autenticacaoUsuarioRepository.findByUsername(cpfFuncionarioSemPrivilegioAdmin);
+
+
+        if(usuarioFuncionarioSemPrivilegioAdmin == null){
+
+            UserDetails userDetails = User.builder()
+                    .username(cpfFuncionarioSemPrivilegioAdmin)
+                    .password(senhaCriptografadaFuncionarioSemPrivilegioAdmin)
+                    .roles(String.valueOf(Role.FUNCIONARIO))
+                    .build();
+
+            List<Role> roles = new ArrayList<>();
+            roles.add(Role.FUNCIONARIO);
+
+            usuarioFuncionarioSemPrivilegioAdmin = new Usuario();
+            usuarioFuncionarioSemPrivilegioAdmin.setUsername(cpfFuncionarioSemPrivilegioAdmin);
+            usuarioFuncionarioSemPrivilegioAdmin.setPassword(senhaCriptografadaFuncionarioSemPrivilegioAdmin);
+            usuarioFuncionarioSemPrivilegioAdmin.setRoles(roles);
+            usuarioFuncionarioSemPrivilegioAdmin.setEnabled(true);
+
+            this.autenticacaoUsuarioRepository.save(usuarioFuncionarioSemPrivilegioAdmin);
+
+        }
+
+
+
 
 
 

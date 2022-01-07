@@ -13,7 +13,8 @@
 
     <div sec:authorize="hasRole('FUNCIONARIO')"  class="card mt-3">
 
-        <form th:object="${solicitacaoClienteEmprestimoDTO}" class="card-body" action="@{/solicitacao-emprestimo/novo}" method="POST">
+        <form th:object="${solicitacaoClienteEmprestimoDTO}" class="card-body"
+              action="@{/solicitacao-emprestimo/novo}" method="POST">
             <div class="form-group">
                 <label for="nome">Cliente</label>
                 <input th:field="*{nome}" th:errorClass="is-invalid" class="form-control" placeholder="nome do cliente"/>
