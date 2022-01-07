@@ -21,6 +21,11 @@
 	</style>
 </head>
 
+<body th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
+<h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>
+<p th:utext="${errorMessage}">Informe o código ao administrador do sistema</p>
+<a href="/emprestimo/listagemEmprestimos.html" th:href="@{/emprestimo/listagemEmprestimos.html}">Voltar para listagem de empréstimos</a>
+
 <div th:fragment="logo" class="">
     <div class="logo-container p-3 d-flex justify-content-between">
         <span class="logo ml-2">Sistema de Controle de Empréstimos</span>
@@ -30,9 +35,11 @@
 			<form id="form-login" th:action="@{/logout}" method="post"></form>
 		</span>
     </div>
-<body th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
-<h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>
-<p th:utext="${errorMessage}">Informe o código ao administrador do sistema</p>
-<a href="/emprestimo/listagemEmprestimos.html" th:href="@{/emprestimo/listagemEmprestimos.html}">Voltar para listagem de empréstimos</a>
+
+
+
+
+
+
 </body>
 </html>

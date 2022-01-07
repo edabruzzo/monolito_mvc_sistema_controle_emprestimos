@@ -23,7 +23,4 @@ public class SistemaControleEmprestimosApplication {
     @Bean
     ModelMapper modelMapper () {return new ModelMapper();}
 
-
-
-
 }

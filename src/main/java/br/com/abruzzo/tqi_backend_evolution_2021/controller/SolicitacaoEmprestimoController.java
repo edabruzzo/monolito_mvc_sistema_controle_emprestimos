@@ -57,7 +57,7 @@ public class SolicitacaoEmprestimoController {
     @RolesAllowed({"FUNCIONARIO", "SUPER_ADMIN"})
     public String solicitarEmprestimo(Model model) {
         model.addAttribute("solicitacaoClienteEmprestimoDTO",new SolicitacaoClienteEmprestimoDTO());
-        return "solicitacao-emprestimo/novo";
+        return "redirect:/solicitacao-emprestimo/novo";
     }
 
 

@@ -74,4 +74,9 @@ public class ClienteService {
     public Cliente findByCPF(String cpf) {
         return this.clienteRepository.findByCpf(cpf);
     }
+
+    public void criaNovoCliente(ClienteDTO clienteDTO) {
+        Cliente cliente = this.converterClienteDTOToModel(clienteDTO);
+        this.clienteRepository.save(cliente);
+    }
 }

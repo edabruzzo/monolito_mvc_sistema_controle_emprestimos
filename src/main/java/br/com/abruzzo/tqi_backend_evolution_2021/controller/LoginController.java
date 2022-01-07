@@ -20,6 +20,6 @@ public class LoginController {
     @GetMapping
     @RequestMapping("/")
     public String home() {
-        return "base";
+        return "redirect:/login";
     }
 }

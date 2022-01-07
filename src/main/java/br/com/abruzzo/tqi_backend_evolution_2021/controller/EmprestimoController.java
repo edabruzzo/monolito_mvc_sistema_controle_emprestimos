@@ -63,8 +63,9 @@ public class EmprestimoController {
      */
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @RolesAllowed({"FUNCIONARIO","SUPER_ADMIN"})
+    @RolesAllowed({"CLIENTE","FUNCIONARIO","SUPER_ADMIN"})
     public String retornaTodosEmprestimos(Model model){
+
 
         List<EmprestimoDTO> listaEmprestimoDTO = this.emprestimoService.retornaTodosEmprestimos();
         model.addAttribute("listaEmprestimos",listaEmprestimoDTO);

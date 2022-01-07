@@ -20,6 +20,7 @@
 	</style>
 </head>
 
+
 <div th:fragment="logo" class="">
     <div class="logo-container p-3 d-flex justify-content-between">
         <span class="logo ml-2">Sistema de Controle de Empréstimos</span>
@@ -29,11 +30,12 @@
 			<form id="form-login" th:action="@{/logout}" method="post"></form>
 		</span>
     </div>
+
     <div sec:authorize="isAuthenticated()">
         <div class="col">
             <nav class="nav">
-                <a class="nav-link" th:href="@{/home}">Home</a>
-                <a sec:authorize="hasRole('CLIENTE')"class="nav-link" th:href="@{/emprestimo/authentication.name}">Listar Empréstimos Consolidados do cliente</a>
+                <a sec:authorize="hasRole('FUNCIONARIO')" class="nav-link" th:href="@{/cliente}">Listar Clientes</a>
+                <a sec:authorize="hasRole('CLIENTE')" class="nav-link" th:href="@{/emprestimo/}">Listar Empréstimos Consolidados do cliente</a>
                 <a sec:authorize="hasRole('FUNCIONARIO')" class="nav-link" th:href="@{/emprestimo/}">Listar Todos os Empréstimos Consolidados</a>
                 <a sec:authorize="hasRole('FUNCIONARIO')" class="nav-link" th:href="@{/emprestimo/}">Listar Todos os Empréstimos</a>
                 <a sec:authorize="hasRole('FUNCIONARIO')" class="nav-link" th:href="@{/solicitacao-emprestimo/solicitar}">Solicitação de novo empréstimo</a>

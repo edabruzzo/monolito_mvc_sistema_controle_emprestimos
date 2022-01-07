@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.List;
 
 /**
  * @author Emmanuel Abruzzo
@@ -40,6 +41,14 @@ public class UsuarioController {
     }
 
 
+    @RolesAllowed({"SUPER_ADMIN"})
+    @GetMapping
+    public String listarUsuarios(Model model){
+
+        List<UsuarioDTO> listaUsuariosDTO = this.autenticacaoUsuarioService.listarUsuarios();
+        model.addAttribute("listaUsuarios",listaUsuariosDTO);
+        return "usuario";
+    }
 
 
 

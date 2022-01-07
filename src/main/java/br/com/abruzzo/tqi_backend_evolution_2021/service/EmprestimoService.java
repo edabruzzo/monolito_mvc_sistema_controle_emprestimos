@@ -16,6 +16,8 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -41,17 +43,25 @@ public class EmprestimoService {
 
 
 
-    public List<EmprestimoDTO> retornaTodosEmprestimosByCliente(String cpfClienteConsultado) {
-
-        List<Emprestimo> listaEmprestimos =  this.emprestimoRepository.findAllByCpf(cpfClienteConsultado);
-        List<EmprestimoDTO> listaEmprestimosDTO = this.converterListaEmprestimoModelToListaEmprestimoDTO(listaEmprestimos);
-        return listaEmprestimosDTO;
-    }
-
-
     public List<EmprestimoDTO> retornaTodosEmprestimos() {
-        List<Emprestimo> listaEmprestimos = this.emprestimoRepository.findAll();
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean usuarioLogadoCliente = ! authentication.getAuthorities().stream()
+                .anyMatch(role -> role.getAuthority().equals("CLIENTE"));
+
+        String cpfCliente = authentication.getName();
+
+        List<Emprestimo> listaEmprestimos = new ArrayList<>();
+
+        if(usuarioLogadoCliente)
+            listaEmprestimos = this.emprestimoRepository.findAllByCpf(cpfCliente);
+        else
+            listaEmprestimos = this.emprestimoRepository.findAll();
+
         List<EmprestimoDTO> listaEmprestimosDTO = this.converterListaEmprestimoModelToListaEmprestimoDTO(listaEmprestimos);
+
         return listaEmprestimosDTO;
     }
 
@@ -113,4 +123,10 @@ public class EmprestimoService {
         return emprestimo;
     }
 
+    public List<EmprestimoDTO> retornaTodosEmprestimosByCliente(String cpfCliente) {
+
+        List<Emprestimo> listaEmprestimos = this.emprestimoRepository.findAllByCpf(cpfCliente);
+        List<EmprestimoDTO> listaEmprestimosDTO = this.converterListaEmprestimoModelToListaEmprestimoDTO(listaEmprestimos);
+        return listaEmprestimosDTO;
+    }
 }

@@ -1,6 +1,8 @@
 package br.com.abruzzo.tqi_backend_evolution_2021.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
  * @link https://docs.oracle.com/javaee/7/tutorial/bean-validation001.htm
  * @link https://github.com/javaee-samples/javaee7-samples/blob/master/pom.xml
  * @link https://guilhermesteves.dev/tutoriais/regex-uteis-para-o-seu-dia-a-dia/
+ * @link https://frontbackend.com/thymeleaf/spring-boot-bootstrap-thymeleaf-datatable
  *
  * @author Emmanuel Abruzzo
  * @date 06/01/2022
@@ -41,10 +44,14 @@ public class Emprestimo implements Serializable {
     private Double valor;
 
     @Column(name = "dataPrimeiraParcela")
-    @Future
+    @Future //Data Futura
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonProperty("dataPrimeiraParcela")
     private Date dataPrimeiraParcela;
 
     @Column(name="dataSolicitacao")
+    @JsonFormat(pattern = "dd/MM/YYYY HH:mm:ss")
+    @JsonProperty("dataPrimeiraParcela")
     private LocalDateTime dataSolicitacao;
 
 
