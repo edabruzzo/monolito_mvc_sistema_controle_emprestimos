@@ -6,7 +6,7 @@
 <div th:replace="~{base :: logo}"></div>
 
 <div class="container">
-    <div th:replace="~{base :: titulo('Requisicao Novo Emprestimo')}"></div>
+    <div th:replace="~{base :: titulo('Requisicão de Novo Empréstimo')}"></div>
 
 
 
@@ -89,7 +89,7 @@
 
 
             <div class="form-group">
-                <label for="dataPrimeiraParcela">Valor da solicitação de empréstimo</label>
+                <label for="dataPrimeiraParcela">Data da primeira parcela do empréstimo</label>
                 <input th:field="*{dataPrimeiraParcela}" th:errorClass="is-invalid" class="form-control" placeholder="primeira parcela do emprestimo solicitado pelo cliente"/>
                 <small>Informe a data da primeira parcela do empréstimo solicitado pelo cliente</small>
                 <div class="invalid-feedback" th:errors="*{dataPrimeiraParcela}">

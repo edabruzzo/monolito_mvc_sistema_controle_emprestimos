@@ -16,4 +16,10 @@ public class LoginController {
     public String login() {
         return "login";
     }
+
+    @GetMapping
+    @RequestMapping("/")
+    public String home() {
+        return "base";
+    }
 }
