@@ -34,23 +34,19 @@ public class ClienteController {
     @GetMapping()
     public String clientes(Model model){
 
+        model.addAttribute("clienteDTO",new ClienteDTO());
         List<Cliente> listaClientes = this.clienteService.listarClientes();
         List<ClienteDTO> listaClientesDTO = this.clienteService.converterlistModelToDTO(listaClientes);
-
         model.addAttribute("listaClientes",listaClientesDTO);
-
         return "cliente";
 
     }
 
 
-
-    @PostMapping
+    @PostMapping("/cadastrar")
     public void cadastrarCliente(@Valid @ModelAttribute ClienteDTO clienteDTO, BindingResult bindingResult, Model model){
-
         this.clienteService.criaNovoCliente(clienteDTO);
         this.clientes(model);
-
     }
 
 }

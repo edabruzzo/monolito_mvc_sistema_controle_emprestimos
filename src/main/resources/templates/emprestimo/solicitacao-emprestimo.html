@@ -15,7 +15,10 @@
         <div sec:authorize="hasRole('FUNCIONARIO')">
 
         <form th:object="${solicitacaoClienteEmprestimoDTO}" class="card-body"
-              action="@{/solicitacao-emprestimo/novo}" method="POST">
+              th:action="@{/solicitacao-emprestimo/novo}" method="POST">
+
+            <div th:fragment="form-cadastro-cliente">
+
             <div class="form-group">
                 <label for="nome">Cliente</label>
                 <input th:field="*{nome}" th:errorClass="is-invalid" class="form-control" placeholder="nome do cliente"/>
@@ -26,8 +29,8 @@
             </div>
             <div class="form-group">
                 <label for="cpf">CPF</label>
-                <input th:field="*{cpf}" th:errorClass="is-invalid" class="form-control" placeholder="CPF cliente"/>
-                <small>Informe o CPF do cliente.</small>
+                <input th:field="*{cpf}" th:errorClass="is-invalid" class="form-control" placeholder="CPF: 999.999.999-99"/>
+                <small>Informe o CPF: 999.999.999-99.</small>
                 <div class="invalid-feedback" th:errors="*{cpf}">
                     Erros no CPF cliente
                 </div>
@@ -47,7 +50,7 @@
             <div class="form-group">
                 <label for="rg">RG do cliente</label>
                 <input th:field="*{rg}" th:errorClass="is-invalid" class="form-control" placeholder="rg do cliente"/>
-                <small>Informe o RG do cliente</small>
+                <small>Informe o RG do cliente RG: 99.999.999-9 ou 99.999.999-X</small>
                 <div class="invalid-feedback" th:errors="*{rg}">
                     Erros no RG do cliente
                 </div>
@@ -73,7 +76,7 @@
                 </div>
             </div>
 
-
+            </div>
 
             <!-- DADOS DA SOLICITAÇÃO DE EMPRÉSTIMO -->
 

@@ -14,24 +14,25 @@
         <h2 th:case="null">Nenhum cliente a ser exibido!</h2>
         <div th:case="*">
             <h2>Lista de Clientes</h2>
-            <table>
-                <thead>
+            <table class="table">
+                <thead class="thead-dark">
+
                 <tr>
-                    <th >Id Cliente</th>
-                    <th>Nome</th>
-                    <th>E-mail</th>
-                    <th>CPF</th>
-                    <th>RG</th>
-                    <th>Endereço Completo</th>
-                    <th>Renda</th>
-                    <th sec:authorize="hasRole('SUPER_ADMIN')">Edit</th>
-                    <th sec:authorize="hasRole('SUPER_ADMIN')">Delete</th>
+                    <th scope="col">Id Cliente</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">RG</th>
+                    <th scope="col">Endereço Completo</th>
+                    <th scope="col">Renda</th>
+                    <th scope="col" sec:authorize="hasRole('SUPER_ADMIN')">Edit</th>
+                    <th scope="col" sec:authorize="hasRole('SUPER_ADMIN')">Delete</th>
 
 
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="cliente : ${listaClientes}">
+                <tr scope="row" th:each="cliente : ${listaClientes}">
                     <td th:text="${cliente.id}"></td>
                     <td class="card-header" th:text="${cliente.nome}"></td>
                     <td th:text="${cliente.email}"></td>
@@ -46,6 +47,20 @@
             </table>
         </div>
     </div>
+
+
+
+
+    <div sec:authorize="hasRole('FUNCIONARIO')"  class="card mt-3">
+            <form th:object="${clienteDTO}" class="card-body"
+                  th:action="@{/cliente/cadastrar}" method="POST">
+                <div th:replace="~{emprestimo/solicitacao-emprestimo::form-cadastro-cliente}"></div>
+                <button class="btn btn-primary" type="submit">Cadastrar cliente</button>
+            </form>
+    </div>
+
+
+
 
 
 </body>

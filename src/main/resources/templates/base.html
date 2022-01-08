@@ -34,7 +34,8 @@
     <div sec:authorize="isAuthenticated()">
         <div class="col">
             <nav class="nav">
-                <a sec:authorize="hasRole('FUNCIONARIO')" class="nav-link" th:href="@{/cliente}">Listar Clientes</a>
+                <a sec:authorize="hasRole('FUNCIONARIO')" class="nav-link" th:href="@{/cliente/cadastrar}">Cadastrar Cliente</a>
+                <a sec:authorize="hasRole('FUNCIONARIO')" class="nav-link" th:href="@{/cliente/cadastrar}">Listar Cliente</a>
                 <a sec:authorize="hasRole('CLIENTE')" class="nav-link" th:href="@{/emprestimo/}">Listar Empréstimos Consolidados do cliente</a>
                 <a sec:authorize="hasRole('FUNCIONARIO')" class="nav-link" th:href="@{/emprestimo/}">Listar Todos os Empréstimos Consolidados</a>
                 <a sec:authorize="hasRole('FUNCIONARIO')" class="nav-link" th:href="@{/emprestimo/}">Listar Todos os Empréstimos</a>

@@ -4,27 +4,9 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 
-<head th:fragment="head">
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Handlee&display=swap" rel="stylesheet">
-    <style>
-		.logo-container {
-			background-color: #47bcff;
-			color:#FFF;
-		}
-
-		.logo {
-			font-family: 'Handlee', cursive;
-			font-size: 2.5rem;
-		}
-	</style>
-</head>
+<head th:replace="~{base :: head}"></head>
 
 <body th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
-<h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>
-<p th:utext="${errorMessage}">Informe o código ao administrador do sistema</p>
-<a href="/emprestimo/listagemEmprestimos.html" th:href="@{/emprestimo/listagemEmprestimos.html}">Voltar para listagem de empréstimos</a>
 
 <div th:fragment="logo" class="">
     <div class="logo-container p-3 d-flex justify-content-between">
@@ -35,11 +17,13 @@
 			<form id="form-login" th:action="@{/logout}" method="post"></form>
 		</span>
     </div>
+    <a href="/emprestimo/" th:href="@{/emprestimo/}">Listar empréstimos</a>
+</div>
 
 
-
-
-
-
+<div>
+<h3 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h3>
+<p th:utext="${errorMessage}">Informe o código ao administrador do sistema</p>
+</div>
 </body>
 </html>
