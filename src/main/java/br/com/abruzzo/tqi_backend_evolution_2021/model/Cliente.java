@@ -41,7 +41,7 @@ public class Cliente implements Serializable {
     private String email;
 
     @Column(name="cpf")
-    @Pattern(regexp="([0-9]{2}[\\.]?[0-9]{3}[\\.]?[0-9]{3}[\\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\\.]?[0-9]{3}[\\.]?[0-9]{3}[-]?[0-9]{2})\n")
+    @Pattern(regexp="([0-9]{3}[\\.]?[0-9]{3}[\\.]?[0-9]{3}[-]?[0-9]{2})")
     private String cpf;
 
     @Column(name="rg")
