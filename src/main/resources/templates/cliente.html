@@ -52,6 +52,7 @@
 
 
     <div sec:authorize="hasRole('FUNCIONARIO')"  class="card mt-3">
+        <h2>Cadastro de Clientes</h2>
             <form th:object="${clienteDTO}" class="card-body"
                   th:action="@{/cliente/cadastrar}" method="POST">
                 <div th:replace="~{emprestimo/solicitacao-emprestimo::form-cadastro-cliente}"></div>

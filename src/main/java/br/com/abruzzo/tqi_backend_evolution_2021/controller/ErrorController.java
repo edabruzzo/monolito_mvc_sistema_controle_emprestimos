@@ -24,7 +24,8 @@ public class ErrorController {
     public String exception(final Throwable throwable, final Model model) {
         logger.error("Ocorreu o seguinte erro durante a execução da aplicação", throwable);
         String errorMessage = (throwable != null ? throwable.getStackTrace().toString() : "Erro desconhecido");
-        model.addAttribute("errorMessage", errorMessage);
+        if(!model.containsAttribute("errorMessage"))
+            model.addAttribute("errorMessage", errorMessage);
         return "error";
     }
 

@@ -43,10 +43,17 @@ public class ClienteController {
     }
 
 
-    @PostMapping("/cadastrar")
-    public void cadastrarCliente(@Valid @ModelAttribute ClienteDTO clienteDTO, BindingResult bindingResult, Model model){
+    @PostMapping("cadastrar")
+    public String cadastrarCliente(@Valid @ModelAttribute ClienteDTO clienteDTO, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
+            model.addAttribute("errorMessage",bindingResult.getFieldErrors().toString());
+            return "error";
+        }
+
         this.clienteService.criaNovoCliente(clienteDTO);
         this.clientes(model);
+
+        return "cliente";
     }
 
 }
