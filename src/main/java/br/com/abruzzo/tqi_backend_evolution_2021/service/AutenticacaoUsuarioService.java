@@ -4,6 +4,7 @@ import br.com.abruzzo.tqi_backend_evolution_2021.dto.UsuarioDTO;
 import br.com.abruzzo.tqi_backend_evolution_2021.exceptions.FuncionarioSemPrivilegioAdminTentandoCriarSUPERADMINException;
 import br.com.abruzzo.tqi_backend_evolution_2021.model.Usuario;
 import br.com.abruzzo.tqi_backend_evolution_2021.repository.AutenticacaoUsuarioRepository;
+import br.com.abruzzo.tqi_backend_evolution_2021.util.VerificacoesSessao;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ import java.util.List;
  * @date 06/01/2022
  */
 @Service
-@RolesAllowed({"FUNCIONARIO","SUPER_ADMIN"})
+@RolesAllowed({"FUNCIONARIO","ROLE_SUPER_ADMIN"})
 public class AutenticacaoUsuarioService {
 
     private static final Logger logger = LoggerFactory.getLogger(AutenticacaoUsuarioService.class);
@@ -47,21 +48,19 @@ public class AutenticacaoUsuarioService {
     public UsuarioDTO criarUsuario(UsuarioDTO usuarioDTO) {
 
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        boolean usuarioLogadoFuncionarioSemPrivilegioAdmin = ! authentication.getAuthorities().stream()
-                .anyMatch(role -> role.getAuthority().equals("SUPER_ADMIN"));
+        boolean usuarioLogadoFuncionarioSemPrivilegioAdmin = VerificacoesSessao.verificaSeUsuarioLogadoEhFuncionarioSemPrivilegioAdmin();
 
         boolean usuarioNovoPossuiPrivilegioAdmin = usuarioDTO.getRoles().stream()
                 .anyMatch(role -> role.equals("SUPER_ADMIN"));
 
         if(usuarioLogadoFuncionarioSemPrivilegioAdmin && usuarioNovoPossuiPrivilegioAdmin){
 
-            String credenciaisUsuarioLogado = authentication.getCredentials().toString();
+            String credenciaisUsuarioLogado = VerificacoesSessao.credenciaisUsuarioLogado();
 
-            String mensagemErro = "Tentativa de um Funcionário criar um SUPER_ADMIN no Sistema\n";
+            String mensagemErro = "Tentativa de um Funcionário criar um ROLE_SUPER_ADMIN no Sistema\n";
             mensagemErro += String.format("Usuário que fez a tentativa %s\n",credenciaisUsuarioLogado);
             mensagemErro += String.format("Usuário que ele tentou cadastrar: %s\n",usuarioDTO);
+
             throw new FuncionarioSemPrivilegioAdminTentandoCriarSUPERADMINException(mensagemErro, this.logger);
 
         }

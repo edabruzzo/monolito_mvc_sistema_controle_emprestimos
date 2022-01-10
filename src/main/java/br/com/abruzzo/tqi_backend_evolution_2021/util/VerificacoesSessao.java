@@ -12,12 +12,20 @@ public class VerificacoesSessao {
     static Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     public static boolean verificaSeUsuarioLogadoCliente() {
-
         return authentication.getAuthorities().stream()
-                .anyMatch(role -> role.getAuthority().equals("CLIENTE"));
+                .anyMatch(role -> role.getAuthority().equals("ROLE_CLIENTE"));
     }
 
     public static String verificaEmailUsuarioLogado() {
         return authentication.getName();
+    }
+
+    public static boolean verificaSeUsuarioLogadoEhFuncionarioSemPrivilegioAdmin() {
+        return ! authentication.getAuthorities().stream()
+                .anyMatch(role -> role.getAuthority().equals("ROLE_SUPER_ADMIN"));
+    }
+
+    public static String credenciaisUsuarioLogado() {
+        return authentication.getCredentials().toString();
     }
 }

@@ -6,10 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
@@ -39,9 +41,9 @@ public class EmprestimoController {
      *
      * @return    retorna um ResponseEntity de lista de DTOs de emprestimos no formato JSON
      */
-    @GetMapping(value="/{emailCliente}",produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/{emailCliente}")
     @ResponseStatus(HttpStatus.OK)
-    @RolesAllowed({"CLIENTE","FUNCIONARIO","SUPER_ADMIN"})
+    @RolesAllowed({"ROLE_CLIENTE","ROLE_FUNCIONARIO","ROLE_SUPER_ADMIN"})
     public String retornaTodosEmprestimosByCliente(@PathVariable String emailCliente, Model model){
 
         List<EmprestimoDTO> listaEmprestimoDTO = emprestimoService.retornaTodosEmprestimosByCliente(emailCliente);
@@ -61,9 +63,9 @@ public class EmprestimoController {
      *
      * @return    retorna um ResponseEntity de lista de DTOs de emprestimos no formato JSON
      */
-    @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @RolesAllowed({"CLIENTE","FUNCIONARIO","SUPER_ADMIN"})
+    @RolesAllowed({"ROLE_CLIENTE","ROLE_FUNCIONARIO","ROLE_SUPER_ADMIN"})
     public String retornaTodosEmprestimos(Model model){
 
         List<EmprestimoDTO> listaEmprestimoDTO = this.emprestimoService.retornaTodosEmprestimos();

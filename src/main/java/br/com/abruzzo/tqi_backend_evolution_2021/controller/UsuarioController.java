@@ -31,7 +31,7 @@ public class UsuarioController {
     }
 
 
-    @RolesAllowed({"FUNCIONARIO", "SUPER_ADMIN"})
+    @RolesAllowed({"ROLE_FUNCIONARIO", "ROLE_SUPER_ADMIN"})
     @PostMapping("criar")
     public String criarNovousuario(@ModelAttribute UsuarioDTO usuarioDTO, Model model){
 
@@ -41,7 +41,7 @@ public class UsuarioController {
     }
 
 
-    @RolesAllowed({"SUPER_ADMIN"})
+    @RolesAllowed({"ROLE_SUPER_ADMIN"})
     @GetMapping
     public String listarUsuarios(Model model){
 

@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/cliente")
-@RolesAllowed({"FUNCIONARIO", "SUPER_ADMIN"})
+@RolesAllowed({"ROLE_FUNCIONARIO", "ROLE_SUPER_ADMIN"})
 public class ClienteController {
 
 
@@ -33,7 +33,6 @@ public class ClienteController {
 
     @GetMapping()
     public String clientes(Model model){
-
 
         model.addAttribute("clienteDTO",new ClienteDTO());
         List<Cliente> listaClientes = this.clienteService.listarClientes();

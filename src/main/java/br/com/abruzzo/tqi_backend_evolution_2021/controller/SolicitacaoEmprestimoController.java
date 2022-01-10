@@ -54,7 +54,7 @@ public class SolicitacaoEmprestimoController {
 
 
     @GetMapping("solicitar")
-    @RolesAllowed({"FUNCIONARIO", "SUPER_ADMIN"})
+    @RolesAllowed({"ROLE_FUNCIONARIO", "ROLE_SUPER_ADMIN"})
     public String solicitarEmprestimo(Model model) {
         model.addAttribute("solicitacaoClienteEmprestimoDTO",new SolicitacaoClienteEmprestimoDTO());
         return "redirect:/solicitacao-emprestimo/novo";
@@ -72,7 +72,7 @@ public class SolicitacaoEmprestimoController {
      * @param solicitacaoClienteEmprestimoDTO
      * @return nomeView  emprestimo
      */
-    @RolesAllowed({"FUNCIONARIO", "SUPER_ADMIN"})
+    @RolesAllowed({"ROLE_FUNCIONARIO", "ROLE_SUPER_ADMIN"})
     @PostMapping("novo")
     public String solicitarNovoEmprestimo(@Valid @ModelAttribute("solicitacaoClienteEmprestimoDTO") SolicitacaoClienteEmprestimoDTO solicitacaoClienteEmprestimoDTO, BindingResult result, Model model){
 
