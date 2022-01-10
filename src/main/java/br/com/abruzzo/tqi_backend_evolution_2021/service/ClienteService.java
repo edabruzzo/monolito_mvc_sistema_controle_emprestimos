@@ -1,15 +1,25 @@
 package br.com.abruzzo.tqi_backend_evolution_2021.service;
 
+import br.com.abruzzo.tqi_backend_evolution_2021.controller.EmprestimoController;
 import br.com.abruzzo.tqi_backend_evolution_2021.dto.ClienteDTO;
 import br.com.abruzzo.tqi_backend_evolution_2021.dto.SolicitacaoClienteEmprestimoDTO;
+import br.com.abruzzo.tqi_backend_evolution_2021.exceptions.ErroOperacaoTransacionalBancoException;
 import br.com.abruzzo.tqi_backend_evolution_2021.model.Cliente;
+import br.com.abruzzo.tqi_backend_evolution_2021.model.Role;
+import br.com.abruzzo.tqi_backend_evolution_2021.model.Usuario;
+import br.com.abruzzo.tqi_backend_evolution_2021.repository.AutenticacaoUsuarioRepository;
 import br.com.abruzzo.tqi_backend_evolution_2021.repository.ClienteRepository;
+import br.com.abruzzo.tqi_backend_evolution_2021.util.CriptografiaSenha;
+import br.com.abruzzo.tqi_backend_evolution_2021.util.EnvioEmailCliente;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Emmanuel Abruzzo
@@ -18,12 +28,17 @@ import java.util.List;
 @Service
 public class ClienteService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ClienteService.class);
+
 
     @Autowired
     ClienteRepository clienteRepository;
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    AutenticacaoUsuarioRepository autenticacaoUsuarioRepository;
 
 
     public List<Cliente> listarClientes() {
@@ -76,6 +91,35 @@ public class ClienteService {
     }
 
     public void criaNovoCliente(ClienteDTO clienteDTO) {
+
+        Usuario usuario = this.autenticacaoUsuarioRepository.findByUsername(clienteDTO.getEmail());
+
+        if(usuario == null){
+
+            usuario = new Usuario();
+            usuario.setUsername(clienteDTO.getEmail());
+            String senhaProvisoria = "SenhaProvisóriaAlterar_";
+            String randomNumber = UUID.randomUUID().toString();
+            senhaProvisoria += randomNumber;
+            usuario.setPassword(CriptografiaSenha.criptografarSenha(senhaProvisoria));
+            List<Role> roles = new ArrayList<>();
+            roles.add(Role.CLIENTE);
+            usuario.setRoles(roles);
+
+
+            try {
+                this.autenticacaoUsuarioRepository.save(usuario);
+                EnvioEmailCliente.enviarEmailUsuarioSenhaProvisoria(clienteDTO.getNome(),clienteDTO.getEmail(), usuario.getPassword());
+            }catch(Exception exception){
+                String mensagemErro = String.format("Não foi possível salvar novo usuário para o cliente {}",clienteDTO);
+                throw new ErroOperacaoTransacionalBancoException(mensagemErro,logger);
+            }
+
+
+
+        }
+
+
         Cliente cliente = this.converterClienteDTOToModel(clienteDTO);
         this.clienteRepository.save(cliente);
     }

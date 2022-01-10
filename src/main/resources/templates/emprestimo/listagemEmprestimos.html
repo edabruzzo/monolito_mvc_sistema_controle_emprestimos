@@ -60,12 +60,12 @@
                 <td th:text="${emprestimoCliente.dataPrimeiraParcela}"></td>
                 <td th:text="${emprestimoCliente.numeroMaximoParcelas}"></td>
 
-                <td sec:authorize="hasRole('FUNCIONARIO')"
+                <td sec:authorize="hasAnyRole('ROLE_FUNCIONARIO','ROLE_SUPER_ADMIN')"
                     th:text="${emprestimoCliente.numeroMaximoParcelas}"></td>
 
                 <td th:text="${#authentication.get}"></td>
-                <td><a sec:authorize="hasRole('SUPER_ADMIN')" th:href="@{/edit/{id}(id=${emprestimoCliente.id})}">Edit</a></td>
-                <td><a sec:authorize="hasRole('SUPER_ADMIN')" th:href="@{/delete/{id}(id=${emprestimoCliente.id})}">Delete</a></td>
+                <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/edit/{id}(id=${emprestimoCliente.id})}">Edit</a></td>
+                <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/delete/{id}(id=${emprestimoCliente.id})}">Delete</a></td>
             </tr>
             </tbody>
         </table>

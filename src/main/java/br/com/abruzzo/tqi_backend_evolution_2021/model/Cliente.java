@@ -55,7 +55,7 @@ public class Cliente implements Serializable {
     private Double renda;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
-    List<Emprestimo> listaEmprestimos;
+    private List<Emprestimo> listaEmprestimos;
 
 
     public Cliente() {  }

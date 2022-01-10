@@ -60,6 +60,7 @@ public class Emprestimo implements Serializable {
     private Integer numeroParcelas;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    
     @JsonIgnore
     private Cliente cliente;
 

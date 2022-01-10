@@ -98,7 +98,6 @@ public class SolicitacaoEmprestimoController {
         usuarioDTO.setLoginAttempt(0);
 
 
-
         UsuarioDTO usuarioDTOSalvo = this.autenticacaoUsuarioService.criarUsuario(usuarioDTO);
         logger.info("Foi criado o usuário na base para fins de autenticação %s",usuarioDTOSalvo);
 

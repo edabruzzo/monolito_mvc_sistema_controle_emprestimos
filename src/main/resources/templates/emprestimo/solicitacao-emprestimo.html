@@ -12,7 +12,7 @@
 
 
     <div sec:authorize="isAuthenticated()"  class="card mt-3">
-        <div sec:authorize="hasRole('FUNCIONARIO')">
+        <div sec:authorize="hasAnyRole('ROLE_FUNCIONARIO','ROLE_SUPER_ADMIN')">
 
         <form th:object="${solicitacaoClienteEmprestimoDTO}" class="card-body"
               th:action="@{/solicitacao-emprestimo/novo}" method="POST">
@@ -122,7 +122,7 @@
     </div>
 
 
-    <div sec:authorize="hasRole('FUNCIONARIO')">
+    <div sec:authorize="hasAnyRole('ROLE_FUNCIONARIO','ROLE_SUPER_ADMIN')">
     <div sec:authorize="isAuthenticated()" th:switch="${listaSolicitadoesEmprestimo}">
         <h2 th:case="null">Nenhums solicitação de empréstimo a ser exibida !</h2>
         <div th:case="*">
@@ -147,8 +147,8 @@
                     <th>Número de parcelas</th>
                     <th sec:authorize="hasRole('FUNCIONARIO')">Id do Cliente</th>
                     <th>CPF do Cliente</th>
-                    <th sec:authorize="hasRole('SUPER_ADMIN')">Edit</th>
-                    <th sec:authorize="hasRole('SUPER_ADMIN')">Delete</th>
+                    <th sec:authorize="hasRole('ROLE_SUPER_ADMIN')">Edit</th>
+                    <th sec:authorize="hasRole('ROLE_SUPER_ADMIN')">Delete</th>
 
 
                 </tr>
@@ -165,8 +165,8 @@
                     <td th:text="${solicitacaoEmprestimo.cpfCliente}"></td>
                     <td th:text="${solicitacaoEmprestimo.emailCliente}"></td>
                     <td th:text="${#authentication.get}"></td>
-                    <td><a sec:authorize="hasRole('SUPER_ADMIN')" th:href="@{/edit/{id}(id=${emprestimoCliente.id})}">Edit</a></td>
-                    <td><a sec:authorize="hasRole('SUPER_ADMIN')" th:href="@{/delete/{id}(id=${emprestimoCliente.id})}">Delete</a></td>
+                    <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/edit/{id}(id=${solicitacaoEmprestimo.id})}">Edit</a></td>
+                    <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/delete/{id}(id=${solicitacaoEmprestimo.id})}">Delete</a></td>
                 </tr>
                 </tbody>
             </table>

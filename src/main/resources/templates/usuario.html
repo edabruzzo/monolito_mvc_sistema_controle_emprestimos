@@ -12,7 +12,7 @@
 
 
 
-    <div sec:authorize="hasRole('SUPER_ADMIN')" th:switch="${listaUsuarios}">
+    <div sec:authorize="hasRole('ROLE_FUNCIONARIO')" th:switch="${listaUsuarios}">
         <h2 th:case="null">Nenhum usuário a ser exibido!</h2>
         <div th:case="*">
             <h2>Lista de Usuários</h2>
@@ -20,13 +20,12 @@
                 <thead>
                 <tr>
                     <th >Id Usuário</th>
-                    <th>CPF do Cliente = Username no sistema</th>
-                    <th>E-mail</th>
+                    <th>E-mail = Username para login</th>
                     <th>Status</th>
                     <th>Tentativas de login</th>
                     <th>Roles</th>
-                    <th sec:authorize="hasRole('SUPER_ADMIN')">Edit</th>
-                    <th sec:authorize="hasRole('SUPER_ADMIN')">Delete</th>
+                    <th sec:authorize="hasRole('ROLE_SUPER_ADMIN')">Edit</th>
+                    <th sec:authorize="hasRole('ROLE_SUPER_ADMIN')">Delete</th>
                 </tr>
 
                 </thead>
@@ -35,13 +34,12 @@
                 <tbody>
                 <tr th:each="usuario : ${listaUsuarios}">
                     <div th:text="${usuario.id}"> Id Usuário</div>
-                    <div class="card-header" th:text="${usuario.username}"> Estamos o CPF do cliente como username do sistema</div>
-                    <div th:text="${usuario.emailAddress}"> E-mail</div>
+                    <div class="card-header" th:text="${usuario.username}"> Estamos o E-mail do cliente como username do sistema</div>
                     <div th:text="${usuario.status}"> Status do usuário</div>
                     <div th:text="${usuario.loginAttempt}"> Tentativas de Login</div>
                     <div th:text="${usuario.roles}"> Papéis do usuário no sistema</div>
-                    <td><a sec:authorize="hasRole('SUPER_ADMIN')" th:href="@{/usuario/edit/{id}(id=${cliente.id})}">Edit</a></td>
-                    <td><a sec:authorize="hasRole('SUPER_ADMIN')" th:href="@{/usuario/delete/{id}(id=${cliente.id})}">Delete</a></td>
+                    <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/usuario/edit/{id}(id=${usuario.id})}">Edit</a></td>
+                    <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/usuario/delete/{id}(id=${usuario.id})}">Delete</a></td>
                 </tr>
                 </tbody>
             </table>
