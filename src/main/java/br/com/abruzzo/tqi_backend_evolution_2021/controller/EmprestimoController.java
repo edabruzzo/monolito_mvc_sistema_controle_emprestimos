@@ -66,7 +66,6 @@ public class EmprestimoController {
     @RolesAllowed({"CLIENTE","FUNCIONARIO","SUPER_ADMIN"})
     public String retornaTodosEmprestimos(Model model){
 
-
         List<EmprestimoDTO> listaEmprestimoDTO = this.emprestimoService.retornaTodosEmprestimos();
         model.addAttribute("listaEmprestimos",listaEmprestimoDTO);
         return "emprestimo/listagemEmprestimos";

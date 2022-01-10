@@ -11,10 +11,13 @@ import br.com.abruzzo.tqi_backend_evolution_2021.repository.AutenticacaoUsuarioR
 import br.com.abruzzo.tqi_backend_evolution_2021.repository.ClienteRepository;
 import br.com.abruzzo.tqi_backend_evolution_2021.util.CriptografiaSenha;
 import br.com.abruzzo.tqi_backend_evolution_2021.util.EnvioEmailCliente;
+import br.com.abruzzo.tqi_backend_evolution_2021.util.VerificacoesSessao;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -42,7 +45,13 @@ public class ClienteService {
 
 
     public List<Cliente> listarClientes() {
-        return clienteRepository.findAll();
+
+        boolean usuarioLogadoCliente = VerificacoesSessao.verificaSeUsuarioLogadoCliente();
+
+        if(usuarioLogadoCliente)
+            return new ArrayList<Cliente>();
+        else
+            return clienteRepository.findAll();
     }
 
 
@@ -99,7 +108,9 @@ public class ClienteService {
             usuario = new Usuario();
             usuario.setUsername(clienteDTO.getEmail());
             String senhaProvisoria = "SenhaProvisóriaAlterar_";
+
             String randomNumber = UUID.randomUUID().toString();
+
             senhaProvisoria += randomNumber;
             usuario.setPassword(CriptografiaSenha.criptografarSenha(senhaProvisoria));
             List<Role> roles = new ArrayList<>();

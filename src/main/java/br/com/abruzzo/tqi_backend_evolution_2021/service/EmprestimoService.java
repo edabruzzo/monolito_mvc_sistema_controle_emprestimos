@@ -12,6 +12,7 @@ import br.com.abruzzo.tqi_backend_evolution_2021.exceptions.ErroOperacaoTransaci
 import br.com.abruzzo.tqi_backend_evolution_2021.model.Cliente;
 import br.com.abruzzo.tqi_backend_evolution_2021.model.Emprestimo;
 import br.com.abruzzo.tqi_backend_evolution_2021.repository.EmprestimoRepository;
+import br.com.abruzzo.tqi_backend_evolution_2021.util.VerificacoesSessao;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,17 +47,14 @@ public class EmprestimoService {
     public List<EmprestimoDTO> retornaTodosEmprestimos() {
 
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean usuarioLogadoCliente = VerificacoesSessao.verificaSeUsuarioLogadoCliente();
 
-        boolean usuarioLogadoCliente = ! authentication.getAuthorities().stream()
-                .anyMatch(role -> role.getAuthority().equals("CLIENTE"));
-
-        String cpfCliente = authentication.getName();
+        String emailCliente = VerificacoesSessao.verificaEmailUsuarioLogado();
 
         List<Emprestimo> listaEmprestimos = new ArrayList<>();
 
         if(usuarioLogadoCliente)
-            listaEmprestimos = this.emprestimoRepository.findAllByCpf(cpfCliente);
+            listaEmprestimos = this.emprestimoRepository.findAllByEmail(emailCliente);
         else
             listaEmprestimos = this.emprestimoRepository.findAll();
 
@@ -67,6 +65,7 @@ public class EmprestimoService {
 
 
     private List<EmprestimoDTO> converterListaEmprestimoModelToListaEmprestimoDTO(List<Emprestimo> listaEmprestimos) {
+
         List<EmprestimoDTO> listaEmprestimoDTO = new ArrayList<>();
 
         listaEmprestimos.stream().forEach(emprestimo ->{

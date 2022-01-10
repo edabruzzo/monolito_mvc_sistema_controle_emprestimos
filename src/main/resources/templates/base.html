@@ -35,8 +35,8 @@
         <div class="col">
             <nav class="nav">
                 <a class="nav-link" th:href="@{/cliente/cadastrar}">Cadastrar Cliente</a>
-                <a class="nav-link" th:href="@{/cliente/cadastrar}">Listar Cliente</a>
-                <a class="nav-link" th:href="@{/emprestimo/}">Listar Todos os Empréstimos Consolidados</a>
+                <a class="nav-link" th:href="@{/cliente}">Listar Cliente</a>
+                <a class="nav-link" th:href="@{/emprestimo}">Listar Todos os Empréstimos Consolidados</a>
                 <a sec:authorize="hasAnyRole('ROLE_FUNCIONARIO', 'ROLE_SUPER_ADMIN')" class="nav-link" th:href="@{/solicitacao-emprestimo/solicitar}">Solicitação de novo empréstimo</a>
                 <a sec:authorize="hasAnyRole('ROLE_FUNCIONARIO','ROLE_SUPER_ADMIN')" class="nav-link" th:href="@{/usuarios}">Gerenciamento de usuários</a>
             </nav>

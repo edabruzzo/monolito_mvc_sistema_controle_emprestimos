@@ -34,6 +34,7 @@ public class ClienteController {
     @GetMapping()
     public String clientes(Model model){
 
+
         model.addAttribute("clienteDTO",new ClienteDTO());
         List<Cliente> listaClientes = this.clienteService.listarClientes();
         List<ClienteDTO> listaClientesDTO = this.clienteService.converterlistModelToDTO(listaClientes);
