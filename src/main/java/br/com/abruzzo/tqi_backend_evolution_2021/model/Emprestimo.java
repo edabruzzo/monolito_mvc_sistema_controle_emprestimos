@@ -51,7 +51,7 @@ public class Emprestimo implements Serializable {
 
     @Column(name="dataSolicitacao")
     @JsonFormat(pattern = "dd/MM/YYYY HH:mm:ss")
-    @JsonProperty("dataPrimeiraParcela")
+    @JsonProperty("dataSolicitacao")
     private LocalDateTime dataSolicitacao;
 
 

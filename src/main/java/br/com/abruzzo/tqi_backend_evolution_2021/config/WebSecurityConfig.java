@@ -1,6 +1,7 @@
 package br.com.abruzzo.tqi_backend_evolution_2021.config;
 
 
+import br.com.abruzzo.tqi_backend_evolution_2021.util.CriptografiaSenha;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,15 +63,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     AutenticacaoUsuarioRepository autenticacaoUsuarioRepository;
 
 
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
 
         auth.jdbcAuthentication().dataSource(this.dataSource).usersByUsernameQuery("select username, password, 'true' as enabled from users where username = ?")
                 .authoritiesByUsernameQuery("select username, authority from authorities where username = ?")
-                .passwordEncoder(encoder);
+                .passwordEncoder(CriptografiaSenha.encoder);
     }
 
 
@@ -80,20 +79,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
 
-        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(this.encoder);
+        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(CriptografiaSenha.encoder);
 
-        String cpfAdmin = "99999999999";
-        String senhaCriptografada = this.encoder.encode("9999");
+        String emailAdmin = "superAdmin@gmail.com";
+        String senhaCriptografada = CriptografiaSenha.criptografarSenha("9999");
 
-
-
-        Usuario usuarioAdmin = this.autenticacaoUsuarioRepository.findByUsername(cpfAdmin);
+        Usuario usuarioAdmin = this.autenticacaoUsuarioRepository.findByUsername(emailAdmin);
 
 
         if(usuarioAdmin == null){
 
             UserDetails userDetails = User.builder()
-                    .username(cpfAdmin)
+                    /**
+                     * Uma exigência dos requisitos enviados pela TQI é que o login seja feito pelo email do cliente
+                     */
+                    .username(emailAdmin)
                     .password(senhaCriptografada)
                     .roles(String.valueOf(Role.FUNCIONARIO),String.valueOf(Role.SUPER_ADMIN))
                     .build();
@@ -103,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             roles.add(Role.SUPER_ADMIN);
 
             usuarioAdmin = new Usuario();
-            usuarioAdmin.setUsername(cpfAdmin);
+            usuarioAdmin.setUsername(emailAdmin);
             usuarioAdmin.setPassword(senhaCriptografada);
             usuarioAdmin.setRoles(roles);
             usuarioAdmin.setEnabled(true);
@@ -112,16 +112,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         }
 
-        String cpfCliente = "11111111111";
-        String senhaCriptografadaCliente = this.encoder.encode("1111");
+        String emailCliente = "cliente@gmail.com";
+        String senhaCriptografadaCliente = CriptografiaSenha.criptografarSenha("2222");
 
-        Usuario usuarioCliente = this.autenticacaoUsuarioRepository.findByUsername(cpfCliente);
+        Usuario usuarioCliente = this.autenticacaoUsuarioRepository.findByUsername(emailCliente);
 
 
         if(usuarioCliente == null){
 
             UserDetails userDetails = User.builder()
-                    .username(cpfCliente)
+                    .username(emailCliente)
                     .password(senhaCriptografadaCliente)
                     .roles(String.valueOf(Role.CLIENTE))
                     .build();
@@ -130,7 +130,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             roles.add(Role.CLIENTE);
 
             usuarioCliente = new Usuario();
-            usuarioCliente.setUsername(cpfCliente);
+            usuarioCliente.setUsername(emailCliente);
             usuarioCliente.setPassword(senhaCriptografadaCliente);
             usuarioCliente.setRoles(roles);
             usuarioCliente.setEnabled(true);
@@ -142,16 +142,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-        String cpfFuncionarioSemPrivilegioAdmin = "22222222222";
-        String senhaCriptografadaFuncionarioSemPrivilegioAdmin = this.encoder.encode("2222");
+        String emailFuncionarioSemPrivilegioAdmin = "funcionario@gmail.com";
+        String senhaCriptografadaFuncionarioSemPrivilegioAdmin = CriptografiaSenha.criptografarSenha("1111");
 
-        Usuario usuarioFuncionarioSemPrivilegioAdmin = this.autenticacaoUsuarioRepository.findByUsername(cpfFuncionarioSemPrivilegioAdmin);
+        Usuario usuarioFuncionarioSemPrivilegioAdmin = this.autenticacaoUsuarioRepository.findByUsername(emailFuncionarioSemPrivilegioAdmin);
 
 
         if(usuarioFuncionarioSemPrivilegioAdmin == null){
 
             UserDetails userDetails = User.builder()
-                    .username(cpfFuncionarioSemPrivilegioAdmin)
+                    .username(emailFuncionarioSemPrivilegioAdmin)
                     .password(senhaCriptografadaFuncionarioSemPrivilegioAdmin)
                     .roles(String.valueOf(Role.FUNCIONARIO))
                     .build();
@@ -160,7 +160,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             roles.add(Role.FUNCIONARIO);
 
             usuarioFuncionarioSemPrivilegioAdmin = new Usuario();
-            usuarioFuncionarioSemPrivilegioAdmin.setUsername(cpfFuncionarioSemPrivilegioAdmin);
+            usuarioFuncionarioSemPrivilegioAdmin.setUsername(emailFuncionarioSemPrivilegioAdmin);
             usuarioFuncionarioSemPrivilegioAdmin.setPassword(senhaCriptografadaFuncionarioSemPrivilegioAdmin);
             usuarioFuncionarioSemPrivilegioAdmin.setRoles(roles);
             usuarioFuncionarioSemPrivilegioAdmin.setEnabled(true);
@@ -168,11 +168,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             this.autenticacaoUsuarioRepository.save(usuarioFuncionarioSemPrivilegioAdmin);
 
         }
-
-
-
-
-
 
 
     }

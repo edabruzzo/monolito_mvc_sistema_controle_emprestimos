@@ -34,17 +34,17 @@ public class EmprestimoController {
      *  após um GET request via chamada Rest
      *
      *  Restrição:
-     *  O cliente não pode consultar o CPF de outro cliente.... se o fizer, será lançada uma exceção
+     *  O cliente não pode consultar os empréstimos de outro cliente.... se o fizer, será lançada uma exceção
      *  e a tentativa será logada
      *
      * @return    retorna um ResponseEntity de lista de DTOs de emprestimos no formato JSON
      */
-    @GetMapping(value="/{cpfCliente}",produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/{emailCliente}",produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @RolesAllowed({"CLIENTE","FUNCIONARIO","SUPER_ADMIN"})
-    public String retornaTodosEmprestimosByCliente(@PathVariable String cpfCliente, Model model){
+    public String retornaTodosEmprestimosByCliente(@PathVariable String emailCliente, Model model){
 
-        List<EmprestimoDTO> listaEmprestimoDTO = emprestimoService.retornaTodosEmprestimosByCliente(cpfCliente);
+        List<EmprestimoDTO> listaEmprestimoDTO = emprestimoService.retornaTodosEmprestimosByCliente(emailCliente);
         model.addAttribute("listaEmprestimos",listaEmprestimoDTO);
 
         return "emprestimo/listagemEmprestimos";

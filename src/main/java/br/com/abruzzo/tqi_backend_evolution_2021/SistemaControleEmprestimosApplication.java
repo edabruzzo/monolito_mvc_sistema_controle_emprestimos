@@ -1,6 +1,7 @@
 package br.com.abruzzo.tqi_backend_evolution_2021;
 
 
+import br.com.abruzzo.tqi_backend_evolution_2021.util.CriptografiaSenha;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,5 +23,6 @@ public class SistemaControleEmprestimosApplication {
 
     @Bean
     ModelMapper modelMapper () {return new ModelMapper();}
+
 
 }

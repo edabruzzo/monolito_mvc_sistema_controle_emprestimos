@@ -129,4 +129,14 @@ public class EmprestimoService {
         List<EmprestimoDTO> listaEmprestimosDTO = this.converterListaEmprestimoModelToListaEmprestimoDTO(listaEmprestimos);
         return listaEmprestimosDTO;
     }
+
+
+    public List<EmprestimoDTO> retornaTodosEmprestimosByEmailCliente(String emailCliente) {
+
+        List<Emprestimo> listaEmprestimos = this.emprestimoRepository.findAllByEmail(emailCliente);
+        List<EmprestimoDTO> listaEmprestimosDTO = this.converterListaEmprestimoModelToListaEmprestimoDTO(listaEmprestimos);
+        return listaEmprestimosDTO;
+    }
+
+
 }

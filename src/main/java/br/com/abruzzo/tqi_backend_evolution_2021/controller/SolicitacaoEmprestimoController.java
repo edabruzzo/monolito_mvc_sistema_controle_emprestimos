@@ -82,7 +82,14 @@ public class SolicitacaoEmprestimoController {
 
 
         UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setEmailAddress(solicitacaoClienteEmprestimoDTO.getEmail());
+
+        /**
+         * Importante !
+                *
+         * Estamos usando o e-mail como username do usuário logado
+         *
+         * */
+        usuarioDTO.setUsername(solicitacaoClienteEmprestimoDTO.getEmail());
         usuarioDTO.setPassword(solicitacaoClienteEmprestimoDTO.getSenha());
         usuarioDTO.setStatus("ATIVO");
         List<String> roles = new ArrayList<>();
@@ -90,15 +97,6 @@ public class SolicitacaoEmprestimoController {
         usuarioDTO.setRoles(roles);
         usuarioDTO.setLoginAttempt(0);
 
-        /**
-         * Importante !
-                *
-         * Estamos usando o CPF como username do usuário logado
-         * Isto permite algumas checagens de segurança no serviço de empréstimo
-         * sem precisar bater no servidor de clientes.
-         *
-         * */
-        usuarioDTO.setUsername(solicitacaoClienteEmprestimoDTO.getCpf());
 
 
         UsuarioDTO usuarioDTOSalvo = this.autenticacaoUsuarioService.criarUsuario(usuarioDTO);
