@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -44,26 +45,26 @@ public class ClienteService {
     AutenticacaoUsuarioRepository autenticacaoUsuarioRepository;
 
 
-    public List<Cliente> listarClientes() {
+    public List<ClienteDTO> listarClientes() {
 
         boolean usuarioLogadoCliente = VerificacoesSessao.verificaSeUsuarioLogadoCliente();
 
         if(usuarioLogadoCliente)
-            return new ArrayList<Cliente>();
-        else
-            return clienteRepository.findAll();
+            return new ArrayList<ClienteDTO>();
+        else{
+            List<Cliente> listaClientes = this.clienteRepository.findAll();
+            List<ClienteDTO> listaClientesDTO = this.converterlistModelToDTO(listaClientes);
+            return listaClientesDTO;
+        }
     }
 
 
     public List<ClienteDTO> converterlistModelToDTO(List<Cliente> listaClientes) {
 
         List<ClienteDTO> listaClientesDTO = new ArrayList<>();
-
         listaClientes.stream().forEach(cliente ->{
-
             ClienteDTO clienteDTO = this.modelMapper.map(cliente,ClienteDTO.class);
             listaClientesDTO.add(clienteDTO);
-
         });
         return listaClientesDTO;
     }
@@ -133,5 +134,23 @@ public class ClienteService {
 
         Cliente cliente = this.converterClienteDTOToModel(clienteDTO);
         this.clienteRepository.save(cliente);
+    }
+
+    public ClienteDTO atualizarCliente(ClienteDTO clienteDTO) {
+        Cliente cliente = this.converterClienteDTOToModel(clienteDTO);
+        cliente = this.clienteRepository.save(cliente);
+        clienteDTO = this.converterModelToDTO(cliente);
+        return clienteDTO;
+    }
+
+    public ClienteDTO findById(Long id) {
+        Cliente cliente = this.clienteRepository.findById(id).get();
+        ClienteDTO clienteDTO = this.converterModelToDTO(cliente);
+        return clienteDTO;
+    }
+
+    public void delete(Long id) {
+        Cliente cliente = this.clienteRepository.findById(id).get();
+        this.clienteRepository.delete(cliente);
     }
 }

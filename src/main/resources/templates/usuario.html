@@ -38,8 +38,8 @@
                     <div th:text="${usuario.status}"> Status do usuário</div>
                     <div th:text="${usuario.loginAttempt}"> Tentativas de Login</div>
                     <div th:text="${usuario.roles}"> Papéis do usuário no sistema</div>
-                    <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/usuario/edit/{id}(id=${usuario.id})}">Edit</a></td>
-                    <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/usuario/delete/{id}(id=${usuario.id})}">Delete</a></td>
+                    <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/usuario/edit/{email}(email=${usuario.username})}">Edit</a></td>
+                    <td><a sec:authorize="hasRole('ROLE_SUPER_ADMIN')" th:href="@{/usuario/delete/{email}(email=${usuario.username})}">Delete</a></td>
                 </tr>
                 </tbody>
             </table>

@@ -117,4 +117,14 @@ public class AutenticacaoUsuarioService {
     }
 
 
+    public UsuarioDTO findByUsername(String email) {
+        Usuario usuario = this.autenticacaoUsuarioRepository.findByUsername(email);
+        UsuarioDTO usuarioDTO = this.converterUsuarioModelToDTO(usuario);
+        return usuarioDTO;
+    }
+
+    public void delete(String email) {
+        Usuario usuario = this.autenticacaoUsuarioRepository.findByUsername(email);
+        this.autenticacaoUsuarioRepository.delete(usuario);
+    }
 }

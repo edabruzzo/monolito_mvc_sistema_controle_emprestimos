@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -35,12 +32,38 @@ public class ClienteController {
     public String clientes(Model model){
 
         model.addAttribute("clienteDTO",new ClienteDTO());
-        List<Cliente> listaClientes = this.clienteService.listarClientes();
-        List<ClienteDTO> listaClientesDTO = this.clienteService.converterlistModelToDTO(listaClientes);
-        model.addAttribute("listaClientes",listaClientesDTO);
+        this.atualizarListaClientesDTOTela(model);
         return "cliente";
 
     }
+
+    private void atualizarListaClientesDTOTela(Model model) {
+        List<ClienteDTO> listaClientesDTO = this.clienteService.listarClientes();
+        model.addAttribute("listaClientes",listaClientesDTO);
+    }
+
+
+    @GetMapping("/edit/{id}")
+    @RolesAllowed("ROLE_SUPER_ADMIN")
+    public String editarCliente(@PathVariable(name="id") Long id, Model model){
+
+        ClienteDTO clienteDTO = this.clienteService.findById(id);
+        model.addAttribute("clienteDTO",clienteDTO);
+        return "cliente";
+
+    }
+
+
+    @GetMapping("/delete/{id}")
+    @RolesAllowed("ROLE_SUPER_ADMIN")
+    public String deletarCliente(@PathVariable("id") Long id, Model model){
+
+        this.clienteService.delete(id);
+        this.atualizarListaClientesDTOTela(model);
+        return "cliente";
+
+    }
+
 
 
     @PostMapping("cadastrar")
